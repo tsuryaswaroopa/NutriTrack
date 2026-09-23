@@ -416,7 +416,7 @@ The API key should be stored as an environment variable and should **not** be ad
 
 A complete demonstration of NutriTrack will be available through a GitHub Issue video.
 
-**Project Demo:** [Watch the NutriTrack Demo]([PASTE_GITHUB_ISSUE_VIDEO_LINK_HERE](https://github.com/user-attachments/assets/3f5b8436-754d-49f1-99ae-ab3c5a1451db))
+**Project Demo:** [Watch the NutriTrack Demo]((https://github.com/user-attachments/assets/3f5b8436-754d-49f1-99ae-ab3c5a1451db)
 
 The demo demonstrates the main features of the application, including:
 
