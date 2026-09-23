@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NutriTrack Pro</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body style="background: linear-gradient(135deg, #e8fff3, #f8fffc);">
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-success shadow">
+
+<div class="container">
+
+<a class="navbar-brand fw-bold fs-3" href="/">
+🍏 NutriTrack
+</a>
+
+<div>
+
+<a href="/login" class="btn btn-light me-2">
+<i class="fa-solid fa-right-to-bracket"></i>
+Login
+</a>
+
+<a href="/register" class="btn btn-warning">
+<i class="fa-solid fa-user-plus"></i>
+Register
+</a>
+
+</div>
+
+</div>
+
+</nav>
+
+<!-- Hero Section -->
+
+<section class="hero">
+
+<div class="container">
+
+<div class="row align-items-center">
+
+<div class="col-lg-6">
+
+<h1 class="display-3 fw-bold">
+
+Track Your Nutrition
+
+<span class="text-success">
+Smartly
+</span>
+
+</h1>
+
+<p class="lead mt-4">
+
+Monitor your daily Calories,
+Protein, Carbs and Fat
+using our professional
+Nutrition Tracker.
+
+</p>
+
+<div class="mt-4">
+
+<a href="/register" class="btn btn-success btn-lg me-3">
+
+Get Started
+
+</a>
+
+<a href="/login" class="btn btn-outline-success btn-lg">
+
+Login
+
+</a>
+
+</div>
+
+</div>
+
+<div class="col-lg-6 text-center">
+
+<img
+src="{{ url_for('static', filename='images/plate.png') }}"
+class="img-fluid"
+style="max-height:420px;"
+alt="Healthy Vegetables">
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Features -->
+
+<section class="py-5">
+
+<div class="container">
+
+<h2 class="text-center fw-bold mb-5">
+
+Why Choose NutriTrack?
+
+</h2>
+
+<div class="row">
+
+<div class="col-md-4">
+
+<div class="card shadow border-0 p-4 h-100 text-center">
+
+<i class="fa-solid fa-chart-pie fa-3x text-success mb-3"></i>
+
+<h4>Nutrition Analytics</h4>
+
+<p>
+
+Visualize your nutrition
+using Pie Charts.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card shadow border-0 p-4 h-100 text-center">
+
+<i class="fa-solid fa-utensils fa-3x text-primary mb-3"></i>
+
+<h4>Track Meals</h4>
+
+<p>
+
+Add Breakfast,
+Lunch,
+Dinner
+and Snacks easily.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card shadow border-0 p-4 h-100 text-center">
+
+<i class="fa-solid fa-heart-pulse fa-3x text-danger mb-3"></i>
+
+<h4>Healthy Lifestyle</h4>
+
+<p>
+
+Maintain a healthy lifestyle
+with daily nutrition monitoring.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Footer -->
+
+<p class="text-center py-4 mb-0">
+    © 2026 NutriTrack developed by Swaroopa
+</p>
+</body>
+
+</html>

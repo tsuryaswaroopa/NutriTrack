@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Choose Your Goal | NutriTrack</title>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    >
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(circle at top left, #d9fbe8 0%, transparent 35%),
+                radial-gradient(circle at bottom right, #d9f3ff 0%, transparent 35%),
+                linear-gradient(135deg, #f7fffb, #eefaf5);
+
+            color: #1f2937;
+        }
+
+        /* NAVBAR */
+
+        .navbar-custom {
+            background: linear-gradient(90deg, #16865a, #20c997);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        .brand {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .logout-btn {
+            background: white;
+            color: #16865a;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background: #f1f1f1;
+            color: #126b48;
+        }
+
+        /* MAIN */
+
+        .main-section {
+            max-width: 1150px;
+            margin: auto;
+            padding: 65px 20px;
+        }
+
+        .welcome {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .welcome h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .welcome h1 span {
+            color: #16865a;
+        }
+
+        .welcome p {
+            color: #6b7280;
+            font-size: 17px;
+            margin: 0;
+        }
+
+        .subtitle {
+            margin-top: 10px;
+            color: #4b5563;
+        }
+
+        /* GOAL CARDS */
+
+        .goal-card {
+            height: 100%;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.90);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            padding: 30px 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #1f2937;
+            display: block;
+        }
+
+        .goal-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.14);
+            color: #1f2937;
+        }
+
+        .goal-icon {
+            width: 80px;
+            height: 80px;
+            margin: auto;
+            border-radius: 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 38px;
+            margin-bottom: 20px;
+        }
+
+        .goal-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .goal-card p {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .select-btn {
+            display: inline-block;
+            padding: 9px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* INDIVIDUAL COLORS */
+
+        .weight-loss .goal-icon {
+            background: #ffe3e3;
+        }
+
+        .weight-loss .select-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .fat-loss .goal-icon {
+            background: #fff0d5;
+        }
+
+        .fat-loss .select-btn {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .weight-gain .goal-icon {
+            background: #e1efff;
+        }
+
+        .weight-gain .select-btn {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .muscle-gain .goal-icon {
+            background: #e9ddff;
+        }
+
+        .muscle-gain .select-btn {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .maintenance .goal-icon {
+            background: #dff8ea;
+        }
+
+        .maintenance .select-btn {
+            background: #16a34a;
+            color: white;
+        }
+
+        /* INFO BOX */
+
+        .info-box {
+            margin-top: 45px;
+            padding: 22px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.75);
+            border: 1px solid rgba(22,134,90,0.12);
+            text-align: center;
+        }
+
+        .info-box i {
+            color: #16865a;
+            margin-right: 7px;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 768px) {
+
+            .welcome h1 {
+                font-size: 31px;
+            }
+
+            .main-section {
+                padding-top: 40px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar-custom">
+
+    <div class="container d-flex justify-content-between align-items-center">
+
+        <a href="/dashboard" class="brand">
+            🍏 NutriTrack
+        </a>
+
+        <a href="/logout" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+    </div>
+
+</nav>
+
+
+<!-- MAIN -->
+
+<section class="main-section">
+
+    <!-- WELCOME -->
+
+    <div class="welcome">
+
+        <h1>
+            Welcome,
+            <span>{{ fullname }}</span> 👋
+        </h1>
+
+        <p>
+            What is your health goal?
+        </p>
+
+        <p class="subtitle">
+            Choose a goal to get your personalized nutrition plan.
+        </p>
+
+    </div>
+
+
+    <!-- GOALS -->
+
+    <div class="row g-4">
+
+
+        <!-- WEIGHT LOSS -->
+
+        <div class="col-lg-4 col-md-6">
+
+            <a href="/set_goal/weight_loss"
+               class="goal-card weight-loss">
+
+                <div class="goal-icon">
+                    ⚖️
+                </div>
+
+                <h3>
+                    Weight Loss
+                </h3>
+
+                <p>
+                    Reduce your overall body weight through
+                    a healthy calorie deficit and balanced nutrition.
+                </p>
+
+                <span class="select-btn">
+                    Choose Goal
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- FAT LOSS -->
+
+        <div class="col-lg-4 col-md-6">
+
+            <a href="/set_goal/fat_loss"
+               class="goal-card fat-loss">
+
+                <div class="goal-icon">
+                    🔥
+                </div>
+
+                <h3>
+                    Fat Loss
+                </h3>
+
+                <p>
+                    Focus on reducing body fat while
+                    maintaining lean muscle and strength.
+                </p>
+
+                <span class="select-btn">
+                    Choose Goal
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- WEIGHT GAIN -->
+
+        <div class="col-lg-4 col-md-6">
+
+            <a href="/set_goal/weight_gain"
+               class="goal-card weight-gain">
+
+                <div class="goal-icon">
+                    📈
+                </div>
+
+                <h3>
+                    Weight Gain
+                </h3>
+
+                <p>
+                    Increase your body weight with
+                    nutritious foods and a controlled calorie surplus.
+                </p>
+
+                <span class="select-btn">
+                    Choose Goal
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- MUSCLE GAIN -->
+
+        <div class="col-lg-6 col-md-6">
+
+            <a href="/set_goal/muscle_gain"
+               class="goal-card muscle-gain">
+
+                <div class="goal-icon">
+                    💪
+                </div>
+
+                <h3>
+                    Muscle Gain
+                </h3>
+
+                <p>
+                    Build lean muscle with enough protein,
+                    calories and strength-focused nutrition.
+                </p>
+
+                <span class="select-btn">
+                    Choose Goal
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- MAINTENANCE -->
+
+        <div class="col-lg-6 col-md-6">
+
+            <a href="/set_goal/maintenance"
+               class="goal-card maintenance">
+
+                <div class="goal-icon">
+                    🌿
+                </div>
+
+                <h3>
+                    Maintenance
+                </h3>
+
+                <p>
+                    Maintain your current weight with
+                    balanced calories, protein and nutrition.
+                </p>
+
+                <span class="select-btn">
+                    Choose Goal
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- INFO -->
+
+    <div class="info-box">
+
+        <p>
+            <i class="fa-solid fa-circle-info"></i>
+
+            After selecting your goal, we'll calculate your
+            <strong>BMI, BMR, TDEE, calorie target and protein goal</strong>
+            based on your details.
+        </p>
+
+    </div>
+
+</section>
+{% include 'chatbot.html' %}
+
+</body>
+
+</html>

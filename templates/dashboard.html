@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard | NutriTrack</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+
+</head>
+    <style>
+
+    /* NAVBAR */
+
+        .navbar-custom {
+            background: linear-gradient(90deg, #16865a, #20c997);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        .brand {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .logout-btn {
+            background: white;
+            color: #16865a;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background: #f1f1f1;
+            color: #126b48;
+        }
+
+</style>
+
+<body class="bg-light">
+    <body style="background: linear-gradient(135deg, #e8fff3, #f8fffc);"></body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-success shadow">
+
+<div class="container">
+
+<a class="navbar-brand fw-bold fs-3" href="/dashboard">
+
+🍏 NutriTrack
+
+</a>
+
+<div>
+
+<a href="/add_food" class="btn btn-warning me-2">
+
+<i class="fa-solid fa-plus"></i>
+
+Add Food
+
+</a>
+
+
+<a href="/logout" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> 
+            Logout
+        </a>
+
+</div>
+
+</div>
+
+</nav>
+
+<!-- MAIN CONTAINER -->
+
+<div class="container py-5">
+
+<!-- Welcome -->
+
+<div class="row mb-4">
+
+<div class="col-md-8">
+
+<h2 class="fw-bold">
+
+👋 Welcome,
+
+<span class="text-success">
+
+{{ fullname }}
+
+</span>
+
+</h2>
+
+<p class="text-muted">
+
+Track your daily nutrition easily.
+
+</p>
+
+</div>
+
+<div class="col-md-4">
+
+<input
+type="text"
+id="searchInput"
+class="form-control form-control-lg"
+placeholder="🔍 Search Food">
+
+</div>
+
+</div>
+
+<!-- Nutrition Cards -->
+
+<div class="row">
+
+<!-- Calories -->
+
+<div class="col-lg-3 col-md-6 mb-4">
+
+<div class="card shadow border-0 bg-danger text-white">
+
+<div class="card-body text-center">
+
+<h5>
+
+🔥 Calories
+
+</h5>
+
+<h2>
+
+{{ calories }}
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Protein -->
+
+<div class="col-lg-3 col-md-6 mb-4">
+
+<div class="card shadow border-0 bg-primary text-white">
+
+<div class="card-body text-center">
+
+<h5>
+
+💪 Protein
+
+</h5>
+
+<h2>
+
+{{ protein }} g
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Carbs -->
+
+<div class="col-lg-3 col-md-6 mb-4">
+
+<div class="card shadow border-0 bg-warning">
+
+<div class="card-body text-center">
+
+<h5>
+
+🍚 Carbs
+
+</h5>
+
+<h2>
+
+{{ carbs }} g
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Fat -->
+
+<div class="col-lg-3 col-md-6 mb-4">
+
+<div class="card shadow border-0 bg-success text-white">
+
+<div class="card-body text-center">
+
+<h5>
+
+🥑 Fat
+
+</h5>
+
+<h2>
+
+{{ fat }} g
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<!-- Pie Chart & Summary -->
+
+<div class="row mt-4">
+
+    <!-- Pie Chart -->
+
+    <div class="col-lg-5 mb-4">
+
+        <div class="card shadow border-0 h-100">
+
+            <div class="card-header bg-success text-white">
+
+                <h4 class="mb-0">
+                    📊 Nutrition Distribution
+                </h4>
+
+            </div>
+
+            <div class="card-body text-center">
+
+                <div style="height:300px; width:300px; margin:auto;">
+
+                    <canvas id="nutritionChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Daily Summary -->
+
+    <div class="col-lg-7 mb-4">
+
+        <div class="card shadow border-0 h-100">
+
+            <div class="card-header bg-dark text-white">
+
+                <h4 class="mb-0">
+                    📈 Daily Nutrition Summary
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-striped table-hover">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Nutrient</th>
+                            <th>Total</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>🔥 Calories</td>
+                            <td>{{ calories }}</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>💪 Protein</td>
+                            <td>{{ protein }} g</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>🍚 Carbs</td>
+                            <td>{{ carbs }} g</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>🥑 Fat</td>
+                            <td>{{ fat }} g</td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <div class="alert alert-success mt-3">
+
+                    <strong>Tip:</strong>
+
+                    Eat a balanced diet with enough protein,
+                    vegetables and water every day.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Today's Foods -->
+
+<div class="card shadow border-0 mt-4">
+
+    <div class="card-header bg-primary text-white">
+
+        <h3 class="mb-0">
+            🍽 Today's Foods
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <!-- Food Table -->
+
+<div class="table-responsive">
+
+<table class="table table-hover table-bordered align-middle text-center" id="foodTable">
+
+<thead class="table-success">
+
+<tr>
+
+<th>ID</th>
+
+<th>Meal</th>
+
+<th>Food</th>
+
+<th>Quantity (g)</th>
+
+<th>Calories</th>
+
+<th>Protein</th>
+
+<th>Carbs</th>
+
+<th>Fat</th>
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% if foods %}
+
+{% for food in foods %}
+
+<tr>
+
+<td>{{ food[0] }}</td>
+
+<td>
+<span class="badge bg-primary">
+{{ food[1] }}
+</span>
+</td>
+
+<td>{{ food[2] }}</td>
+
+<td>{{ food[3] }}</td>
+
+<td>{{ food[4] }}</td>
+
+<td>{{ food[5] }} g</td>
+
+<td>{{ food[6] }} g</td>
+
+<td>{{ food[7] }} g</td>
+
+<td>
+
+<a href="/edit_food/{{ food[0] }}"
+class="btn btn-warning btn-sm">
+    Edit
+</a>
+
+<a href="/delete_food/{{ food[0] }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Delete this food?')">
+    Delete
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+{% else %}
+
+<tr>
+
+<td colspan="9">
+
+<div class="alert alert-info mb-0">
+
+🍽️ No food records found.
+
+<br><br>
+
+Click the <strong>Add Food</strong> button to start tracking your nutrition.
+
+</div>
+
+</td>
+
+</tr>
+
+{% endif %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+<div class="text-center mt-4">
+    <a href="{{ url_for('progress') }}" class="btn btn-success btn-lg">
+    <i class="fa-solid fa-chart-line me-2"></i>
+    Track Progress
+</a>
+
+<a href="/predict_weight" class="btn btn-success btn-lg">
+    <i class="fa-solid fa-wand-magic-sparkles me-2"></i>
+    Predict Weight
+</a>
+</div>
+
+<!-- Footer -->
+
+<footer class="text-center mt-5 mb-3 text-muted">
+
+<hr>
+
+<p>
+
+ © 2026 NutriTrack developed by Swaroopa
+
+</p>
+
+</footer>
+
+</div>
+
+<!-- Chart.js -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('nutritionChart');
+
+new Chart(ctx, {
+
+type: 'pie',
+
+data: {
+
+labels: [
+
+'Protein',
+
+'Carbs',
+
+'Fat'
+
+],
+
+datasets: [{
+
+data: [
+
+{{ protein }},
+
+{{ carbs }},
+
+{{ fat }}
+
+],
+
+backgroundColor: [
+
+'#0d6efd',
+
+'#ffc107',
+
+'#198754'
+
+],
+
+borderWidth:2
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+
+position:'bottom'
+
+}
+
+}
+
+}
+
+});
+
+</script>
+
+<!-- Search -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const nutritionData = [
+
+{{ protein }},
+
+{{ carbs }},
+
+{{ fat }}
+
+];
+
+</script>
+
+<script src="{{ url_for('static', filename='js/chart.js') }}"></script>
+
+
+{% include 'chatbot.html' %}
+</body>
+
+</html>

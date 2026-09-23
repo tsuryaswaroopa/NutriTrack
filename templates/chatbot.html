@@ -1,0 +1,181 @@
+<!-- ================= CHATBOT ================= -->
+
+<div class="chatbot-container">
+
+    <!-- Chat Button -->
+    <button class="chatbot-button" onclick="toggleChat()">
+        <i class="fa-solid fa-robot"></i>
+    </button>
+
+
+    <!-- Chat Window -->
+    <div class="chatbot-window" id="chatbotWindow">
+
+        <!-- Header -->
+        <div class="chatbot-header">
+
+            <div>
+                <div class="chatbot-title">
+                    🍏 NutriTrack AI
+                </div>
+
+                <small>
+                    Your nutrition assistant
+                </small>
+            </div>
+
+            <button class="chatbot-close" onclick="toggleChat()">
+                &times;
+            </button>
+
+        </div>
+
+
+        <!-- Messages -->
+        <div class="chatbot-messages" id="chatbotMessages">
+
+            <div class="bot-message">
+                Hi! 👋<br>
+                I'm your NutriTrack AI assistant.
+                How can I help you today?
+            </div>
+
+        </div>
+
+
+        <!-- Input -->
+        <div class="chatbot-input-area">
+
+            <input
+                type="text"
+                id="chatbotInput"
+                placeholder="Ask something..."
+                onkeydown="handleChatKey(event)"
+            >
+
+            <button onclick="sendMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function toggleChat() {
+
+    const chatWindow = document.getElementById("chatbotWindow");
+
+    if (chatWindow.style.display === "flex") {
+        chatWindow.style.display = "none";
+    } else {
+        chatWindow.style.display = "flex";
+    }
+
+}
+
+
+function handleChatKey(event) {
+
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+
+}
+
+
+function sendMessage() {
+
+    const input =
+        document.getElementById("chatbotInput");
+
+    const message =
+        input.value.trim();
+
+    if (message === "") {
+        return;
+    }
+
+    const messages =
+        document.getElementById("chatbotMessages");
+
+
+    // USER MESSAGE
+    const userMessage =
+        document.createElement("div");
+
+    userMessage.className =
+        "user-message";
+
+    userMessage.textContent =
+        message;
+
+    messages.appendChild(userMessage);
+
+    input.value = "";
+
+
+    // SEND MESSAGE TO FLASK
+    fetch("/chat", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            message: message
+        })
+
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        // BOT MESSAGE
+        const botMessage =
+            document.createElement("div");
+
+        botMessage.className =
+            "bot-message";
+
+        botMessage.textContent =
+            data.reply;
+
+        messages.appendChild(botMessage);
+
+        messages.scrollTop =
+            messages.scrollHeight;
+
+    })
+
+    .catch(error => {
+
+        console.error("Chat error:", error);
+
+        const botMessage =
+            document.createElement("div");
+
+        botMessage.className =
+            "bot-message";
+
+        botMessage.textContent =
+            "Something went wrong. Please try again.";
+
+        messages.appendChild(botMessage);
+
+    });
+
+    messages.scrollTop =
+        messages.scrollHeight;
+
+    input.focus();
+}
+
+</script>

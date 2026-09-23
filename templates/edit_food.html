@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Food | NutriTrack</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+
+</head>
+
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-success shadow">
+
+<div class="container">
+
+<a class="navbar-brand fw-bold fs-3" href="/dashboard">
+
+🍏 NutriTrack
+
+</a>
+
+<a href="/dashboard" class="btn btn-light">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+Dashboard
+
+</a>
+
+</div>
+
+</nav>
+
+<div class="container py-5">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-7">
+
+<div class="card shadow-lg border-0 rounded-4">
+
+<div class="card-header bg-warning text-dark text-center">
+
+<h2>
+
+<i class="fa-solid fa-pen"></i>
+
+Edit Food
+
+</h2>
+
+</div>
+
+<div class="card-body p-4">
+
+<form
+method="POST"
+action="/update_food/{{ food[0] }}">
+
+<div class="mb-3">
+
+<label class="form-label fw-bold">
+
+Meal Type
+
+</label>
+
+<select
+name="meal_type"
+class="form-select form-select-lg"
+required>
+
+<option value="Breakfast"
+{% if food[1]=='Breakfast' %}selected{% endif %}>
+Breakfast
+</option>
+
+<option value="Lunch"
+{% if food[1]=='Lunch' %}selected{% endif %}>
+Lunch
+</option>
+
+<option value="Dinner"
+{% if food[1]=='Dinner' %}selected{% endif %}>
+Dinner
+</option>
+
+<option value="Snack"
+{% if food[1]=='Snack' %}selected{% endif %}>
+Snack
+</option>
+
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label fw-bold">
+
+Food Name
+
+</label>
+
+<input
+type="text"
+name="food_name"
+class="form-control form-control-lg"
+value="{{ food[2] }}"
+readonly>
+
+</div>
+
+<div class="mb-4">
+
+<label class="form-label fw-bold">
+
+Quantity (grams)
+
+</label>
+
+<input
+type="number"
+name="quantity"
+class="form-control form-control-lg"
+value="{{ food[3] }}"
+required>
+
+</div>
+
+<div class="d-grid gap-2">
+
+<button
+type="submit"
+class="btn btn-warning btn-lg">
+
+<i class="fa-solid fa-floppy-disk"></i>
+
+Update Food
+
+</button>
+
+<a href="/dashboard"
+class="btn btn-secondary btn-lg">
+
+Cancel
+
+</a>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+{% include 'chatbot.html' %}
+</body>
+
+</html>

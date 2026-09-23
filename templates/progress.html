@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Progress Tracking - NutriTrack</title>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    >
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <!-- NutriTrack CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+    <style>
+
+    /* NAVBAR */
+
+        .navbar-custom {
+            background: linear-gradient(90deg, #16865a, #20c997);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        .brand {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .logout-btn {
+            background: white;
+            color: #16865a;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background: #f1f1f1;
+            color: #126b48;
+        }
+
+</style>
+
+<body style="background: linear-gradient(135deg, #e8fff3, #f8fffc);">
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar navbar-expand-lg shadow-sm"
+     style="background: linear-gradient(90deg, #168f5b, #20c997);">
+
+    <div class="container">
+
+        <a class="navbar-brand fw-bold text-white fs-4" href="/about">
+            🍏 NutriTrack
+        </a>
+
+        <div class="d-flex align-items-center">
+            
+        <a href="/logout" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> 
+            Logout
+        </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     MAIN SECTION
+========================================================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <!-- =================================================
+             PAGE TITLE
+        ================================================== -->
+
+        <div class="text-center mb-5">
+
+            <h1 class="fw-bold">
+                <span class="gradient-text">
+                    Progress Tracking
+                </span>
+            </h1>
+
+            <p class="text-muted">
+                Track your monthly weight and monitor your journey with NutriTrack.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             RECORD WEIGHT + WEIGHT PROGRESS
+        ================================================== -->
+
+        <div class="row g-4 mb-5">
+
+            <!-- =================================================
+                 RECORD YOUR WEIGHT
+            ================================================== -->
+
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm p-4 h-100">
+
+                    <div class="text-center mb-4">
+
+                        <i class="bi bi-calendar-check fs-1 text-success"></i>
+
+                        <h4 class="fw-bold mt-2">
+                            Record Your Weight
+                        </h4>
+
+                        <p class="text-muted mb-0">
+                            Enter your weight for a particular month.
+                        </p>
+
+                    </div>
+
+
+                    <form method="POST" action="/progress">
+
+                        <!-- MONTH -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Select Month
+                            </label>
+
+                            <input
+                                type="month"
+                                name="month"
+                                class="form-control"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- WEIGHT -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Weight (kg)
+                            </label>
+
+                            <input
+                                type="number"
+                                name="weight"
+                                class="form-control"
+                                step="0.1"
+                                min="1"
+                                placeholder="Enter your weight"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- SAVE BUTTON -->
+
+                        <button
+                            type="submit"
+                            class="btn btn-success w-100"
+                        >
+                            <i class="bi bi-plus-circle me-1"></i>
+                            Save Weight
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 WEIGHT PROGRESS
+            ================================================== -->
+
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm p-4 h-100">
+
+                    <div class="text-center mb-3">
+
+                        <h4 class="fw-bold">
+                            <i class="bi bi-graph-up-arrow text-success"></i>
+                            Weight Progress
+                        </h4>
+
+                        <p class="text-muted">
+                            Your monthly weight journey
+                        </p>
+
+                    </div>
+
+
+                    {% if records %}
+
+                        <div style="height: 350px;">
+
+                            <canvas id="weightChart"></canvas>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="text-center py-5">
+
+                            <i class="bi bi-bar-chart-line fs-1 text-muted"></i>
+
+                            <h5 class="mt-3">
+                                No progress recorded yet
+                            </h5>
+
+                            <p class="text-muted">
+                                Add your first monthly weight to see your progress graph.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             WEIGHT SUMMARY
+        ================================================== -->
+
+        <div class="row g-4 mb-5">
+
+
+            <!-- STARTING WEIGHT -->
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm h-100 p-4 text-center">
+
+                    <i class="bi bi-flag fs-1 text-success"></i>
+
+                    <h6 class="text-muted mt-3">
+                        Starting Weight
+                    </h6>
+
+                    <h2 class="fw-bold">
+
+                        {% if starting_weight > 0 %}
+
+                            {{ starting_weight }} kg
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- LATEST WEIGHT -->
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm h-100 p-4 text-center">
+
+                    <i class="bi bi-speedometer2 fs-1 text-success"></i>
+
+                    <h6 class="text-muted mt-3">
+                        Latest Weight
+                    </h6>
+
+                    <h2 class="fw-bold">
+
+                        {% if latest_weight > 0 %}
+
+                            {{ latest_weight }} kg
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- WEIGHT CHANGE -->
+
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm h-100 p-4 text-center">
+
+                    <i class="bi bi-graph-down-arrow fs-1 text-success"></i>
+
+                    <h6 class="text-muted mt-3">
+                        Weight Change
+                    </h6>
+
+                    <h2 class="fw-bold">
+
+                        {% if weight_change > 0 %}
+
+                            +{{ weight_change }} kg
+
+                        {% elif weight_change < 0 %}
+
+                            {{ weight_change }} kg
+
+                        {% else %}
+
+                            0 kg
+
+                        {% endif %}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             WEIGHT HISTORY
+        ================================================== -->
+
+        <div class="card border-0 shadow-sm p-4">
+
+            <div class="text-center mb-4">
+
+                <h4 class="fw-bold">
+                    Weight History
+                </h4>
+
+                <p class="text-muted">
+                    Your recorded monthly weights
+                </p>
+
+            </div>
+
+
+            {% if records %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle text-center">
+
+                        <thead class="table-success">
+
+    <tr>
+
+        <th>
+            Month
+        </th>
+
+        <th>
+            Weight
+        </th>
+
+        <th>
+            Action
+        </th>
+
+    </tr>
+
+</thead>
+
+
+                      <tbody>
+
+    {% for record in records %}
+
+        <tr>
+
+            <td>
+                {{ record[0] }}
+            </td>
+
+            <td class="fw-semibold">
+                {{ record[1] }} kg
+            </td>
+
+            <td>
+
+                <form
+                    method="POST"
+                    action="{{ url_for('delete_progress', month=record[0]) }}"
+                    onsubmit="return confirm('Are you sure you want to delete this weight record?');"
+                    class="d-inline"
+                >
+
+                    <button
+                        type="submit"
+                        class="btn btn-sm btn-outline-danger"
+                    >
+
+                        <i class="bi bi-trash"></i>
+                        Delete
+
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+</tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <p class="text-center text-muted mb-0">
+                    No weight history available.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =================================================
+             BACK BUTTON
+        ================================================== -->
+
+        <div class="text-center mt-5">
+
+            <a
+                href="/about"
+                class="btn btn-success px-4"
+            >
+                <i class="bi bi-arrow-left me-1"></i>
+                Back to About
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- FOOTER -->
+<footer class="text-center py-4 mt-5">
+    <p class="mb-0 text-muted">
+         © 2026 NutriTrack developed by Swaroopa
+    </p>
+</footer>
+
+
+<!-- =========================================================
+     CHART SCRIPT
+========================================================= -->
+
+{% if records %}
+
+<script>
+
+const months = {{ months | tojson }};
+const weights = {{ weights | tojson }};
+
+const ctx = document.getElementById("weightChart");
+
+new Chart(ctx, {
+
+    type: "line",
+
+    data: {
+
+        labels: months,
+
+        datasets: [{
+
+            label: "Weight (kg)",
+
+            data: weights,
+
+            borderColor: "#198754",
+            backgroundColor: "#198754",
+
+            tension: 0.3,
+
+            fill: false,
+
+            pointRadius: 5,
+
+            pointHoverRadius: 7,
+
+            pointBackgroundColor: "#198754",
+            pointBorderColor: "#198754"
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+                display: true
+            }
+
+        },
+
+        scales: {
+
+            y: {
+
+                title: {
+
+                    display: true,
+
+                    text: "Weight (kg)"
+
+                },
+
+                beginAtZero: false
+
+            },
+
+            x: {
+
+                title: {
+
+                    display: true,
+
+                    text: "Month"
+
+                }
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+{% endif %}
+
+
+<!-- =========================================================
+     BOOTSTRAP JS
+========================================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+{% include 'chatbot.html' %}
+</body>
+
+</html>

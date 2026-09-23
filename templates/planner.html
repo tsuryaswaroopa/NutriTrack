@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Personalized Plan | NutriTrack</title>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    >
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(circle at top left, #d9fbe8 0%, transparent 35%),
+                radial-gradient(circle at bottom right, #d9f3ff 0%, transparent 35%),
+                linear-gradient(135deg, #f7fffb, #eefaf5);
+
+            color: #1f2937;
+        }
+
+        /* NAVBAR */
+
+        .navbar-custom {
+            background: linear-gradient(90deg, #16865a, #20c997);
+
+            padding: 15px 0;
+
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        .brand {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .logout-btn {
+            background: white;
+            color: #16865a;
+
+            border: none;
+
+            padding: 9px 18px;
+
+            border-radius: 12px;
+
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background: #f1f1f1;
+            color: #126b48;
+        }
+
+
+        /* MAIN */
+
+        .main-section {
+
+            max-width: 900px;
+
+            margin: auto;
+
+            padding: 55px 20px 70px;
+        }
+
+
+        /* HEADING */
+
+        .page-heading {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+        .page-heading h1 {
+
+            font-size: 38px;
+
+            font-weight: 800;
+
+            margin-bottom: 10px;
+        }
+
+        .page-heading h1 span {
+
+            color: #16865a;
+        }
+
+        .page-heading p {
+
+            color: #6b7280;
+
+            margin: 5px 0;
+
+            font-size: 15px;
+        }
+
+
+        /* SELECTED GOAL */
+
+        .selected-goal {
+
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 10px 20px;
+
+            border-radius: 30px;
+
+            background: #e1f7ec;
+
+            color: #16865a;
+
+            font-weight: 700;
+
+            text-transform: capitalize;
+        }
+
+
+        /* FORM CARD */
+
+        .form-card {
+
+            background: rgba(255,255,255,0.94);
+
+            border-radius: 28px;
+
+            padding: 38px;
+
+            box-shadow: 0 15px 40px rgba(0,0,0,0.10);
+
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+
+
+        .section-title {
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            margin-bottom: 25px;
+
+            color: #16865a;
+        }
+
+
+        /* FORM */
+
+        .form-label {
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+
+            color: #374151;
+        }
+
+
+        .form-control,
+        .form-select {
+
+            height: 52px;
+
+            border-radius: 13px;
+
+            border: 1px solid #d1d5db;
+
+            padding: 10px 15px;
+
+            font-family: 'Poppins', sans-serif;
+        }
+
+
+        .form-control:focus,
+        .form-select:focus {
+
+            border-color: #20a875;
+
+            box-shadow: 0 0 0 3px rgba(32,168,117,0.12);
+        }
+
+
+        /* INPUT ICON */
+
+        .input-group-text {
+
+            background: #f0faf5;
+
+            border: 1px solid #d1d5db;
+
+            border-right: none;
+
+            border-radius: 13px 0 0 13px;
+
+            color: #16865a;
+        }
+
+        .input-group .form-control {
+
+            border-left: none;
+
+            border-radius: 0 13px 13px 0;
+        }
+
+
+        /* BUTTON */
+
+        .calculate-btn {
+
+            width: 100%;
+
+            height: 55px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            background: linear-gradient(
+                90deg,
+                #16865a,
+                #20c997
+            );
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            margin-top: 20px;
+
+            transition: 0.3s;
+        }
+
+
+        .calculate-btn:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(22,134,90,0.25);
+        }
+
+
+        /* NOTE */
+
+        .note-box {
+
+            margin-top: 25px;
+
+            padding: 16px 18px;
+
+            border-radius: 15px;
+
+            background: #f0faf5;
+
+            color: #5b6470;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .note-box i {
+
+            color: #16865a;
+
+            margin-right: 6px;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 768px) {
+
+            .page-heading h1 {
+
+                font-size: 30px;
+            }
+
+            .form-card {
+
+                padding: 25px 20px;
+            }
+
+            .brand {
+
+                font-size: 23px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<nav class="navbar-custom">
+
+    <div class="container d-flex justify-content-between align-items-center">
+
+        <a href="/goals" class="brand">
+            🍏 NutriTrack
+        </a>
+        <a href="/logout" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> 
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- MAIN -->
+
+<section class="main-section">
+
+
+    <!-- HEADING -->
+
+    <div class="page-heading">
+
+        <h1>
+            Create Your
+            <span>Personalized Plan</span>
+        </h1>
+
+        <p>
+            Hi {{ fullname }} 👋
+        </p>
+
+        <p>
+            Enter your details so we can calculate your
+            personalized nutrition targets.
+        </p>
+
+        <div class="selected-goal">
+
+            🎯
+            {{ goal.replace("_", " ").title() }}
+
+        </div>
+
+    </div>
+
+
+
+    <!-- FORM CARD -->
+
+    <div class="form-card">
+
+
+        <div class="section-title">
+
+            <i class="fa-solid fa-user"></i>
+
+            Your Body Details
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form action="/calculate_plan" method="POST">
+
+
+            <!-- GOAL -->
+
+            <input
+                type="hidden"
+                name="goal"
+                value="{{ goal }}">
+
+
+
+            <!-- AGE + GENDER -->
+
+            <div class="row g-4">
+
+
+                <!-- AGE -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Age
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-cake-candles"></i>
+                        </span>
+
+                        <input
+                            type="number"
+                            name="age"
+                            class="form-control"
+                            placeholder="Enter your age"
+                            min="13"
+                            max="100"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- GENDER -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Gender
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-venus-mars"></i>
+                        </span>
+
+                        <select
+                            name="gender"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select gender
+                            </option>
+
+                            <option value="Female">
+                                Female
+                            </option>
+
+                            <option value="Male">
+                                Male
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- HEIGHT -->
+
+            <div class="mt-4">
+
+                <label class="form-label">
+                    Height
+                </label>
+
+                <div class="input-group">
+
+                    <span class="input-group-text">
+                        <i class="fa-solid fa-ruler-vertical"></i>
+                    </span>
+
+                    <input
+                        type="number"
+                        name="height"
+                        class="form-control"
+                        placeholder="Enter height in cm"
+                        min="100"
+                        max="250"
+                        step="0.1"
+                        required>
+
+                    <span class="input-group-text">
+                        cm
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CURRENT WEIGHT -->
+
+            <div class="mt-4">
+
+                <label class="form-label">
+                    Current Weight
+                </label>
+
+                <div class="input-group">
+
+                    <span class="input-group-text">
+                        <i class="fa-solid fa-weight-scale"></i>
+                    </span>
+
+                    <input
+                        type="number"
+                        name="current_weight"
+                        class="form-control"
+                        placeholder="Enter current weight"
+                        min="30"
+                        max="300"
+                        step="0.1"
+                        required>
+
+                    <span class="input-group-text">
+                        kg
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TARGET WEIGHT -->
+
+            <div class="mt-4">
+
+                <label class="form-label">
+                    Target Weight
+                </label>
+
+                <div class="input-group">
+
+                    <span class="input-group-text">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </span>
+
+                    <input
+                        type="number"
+                        name="target_weight"
+                        class="form-control"
+                        placeholder="Enter target weight"
+                        min="30"
+                        max="300"
+                        step="0.1"
+                        required>
+
+                    <span class="input-group-text">
+                        kg
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ACTIVITY -->
+
+            <div class="mt-4">
+
+                <label class="form-label">
+
+                    Activity Level
+
+                </label>
+
+                <select
+                    name="activity"
+                    class="form-select"
+                    required>
+
+                    <option value="">
+                        Select your activity level
+                    </option>
+
+                    <option value="Sedentary">
+
+                        🪑 Sedentary —
+                        Little or no exercise
+
+                    </option>
+
+                    <option value="Light">
+
+                        🚶 Light —
+                        Exercise 1–3 days/week
+
+                    </option>
+
+                    <option value="Moderate">
+
+                        🏃 Moderate —
+                        Exercise 3–5 days/week
+
+                    </option>
+
+                    <option value="Active">
+
+                        🏋️ Active —
+                        Exercise 6–7 days/week
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="calculate-btn">
+
+                <i class="fa-solid fa-calculator"></i>
+
+                Calculate My Plan
+
+            </button>
+
+
+        </form>
+
+
+
+        <!-- INFO -->
+
+        <div class="note-box">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            We'll calculate your
+            <strong>BMI, BMR, TDEE, daily calorie target,
+            protein goal and water goal</strong>
+            based on the information you provide.
+
+        </div>
+
+
+    </div>
+
+
+</section>
+<!-- FOOTER -->
+<footer class="text-center py-4 mt-5">
+    <p class="mb-0 text-muted">
+         © 2026 NutriTrack developed by Swaroopa
+    </p>
+</footer>
+
+
+
+<!-- BOOTSTRAP JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
+{% include 'chatbot.html' %}
+</body>
+
+</html>
