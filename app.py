@@ -665,7 +665,7 @@ def add_food():
                 carbs,
                 fat
             )
-            VALUES(?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP)
+            VALUES(?,?,?,?,?,?,?,?)
         """,
         (
             session["email"],
